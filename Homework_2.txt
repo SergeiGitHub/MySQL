@@ -1,0 +1,92 @@
+# 1. Создал в домашней директории файл .my.cnf, задал в нем логин и пароль. Проверка:
+
+sergei@sergei-VirtualBox:~$ mysql
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 8.0.26-0ubuntu0.20.04.2 (Ubuntu)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> 
+
+# 2.1 Создание базы данных example
+
+mysql> CREATE DATABASE IF NOT EXISTS example;
+Query OK, 1 row affected (0,02 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| example            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| shop               |
+| sys                |
++--------------------+
+6 rows in set (0,00 sec)
+
+# 2.2 Создание таблицы users, состоящую из двух столбцов, числового id и строкового name.
+
+mysql> USE example;
+Database changed
+
+mysql> CREATE TABLE users (
+    -> id INT,
+    -> name VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0,03 sec)
+
+# 3.1 Дамп базы данных example
+
+sergei@sergei-VirtualBox:~$ mysqldump example > example.sql
+sergei@sergei-VirtualBox:~$ ls
+Desktop  Documents  Downloads  example.sql  hello.sql  Music  mysql.sql  Pictures  Public  Templates  Videos
+
+# 3.2 Разворот содержимого дампа в новую базу данных sample
+
+mysql> CREATE DATABASE sample;
+Query OK, 1 row affected (0,02 sec)
+
+sergei@sergei-VirtualBox:~$ mysqldump sample < example.sql
+-- MySQL dump 10.13  Distrib 8.0.26, for Linux (x86_64)
+--
+-- Host: localhost    Database: sample
+-- ------------------------------------------------------
+-- Server version	8.0.26-0ubuntu0.20.04.2
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-08-31  7:03:09
+
+# 4.1 Дамп единственной таблицы help_keyword базы данных mysql
+
+sergei@sergei-VirtualBox:~$ mysqldump mysql help_keyword > help_keyword.sql
+sergei@sergei-VirtualBox:~$ ls
+Desktop    Downloads    hello.sql         Music      Pictures  Templates
+Documents  example.sql  help_keyword.sql  mysql.sql  Public    Videos
